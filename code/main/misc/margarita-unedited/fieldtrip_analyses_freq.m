@@ -2826,6 +2826,10 @@ end
                 continue;
             end
 
+            med = {}:
+            thin = {};
+            thick = {};
+
             spm_eeg = meeg(D);
             fieldtrip_raw = spm_eeg.ftraw;
             
