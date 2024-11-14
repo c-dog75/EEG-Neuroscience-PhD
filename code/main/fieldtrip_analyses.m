@@ -436,11 +436,11 @@ end
 
 
                     [p1_67, po_p1_67] = load_postprocessed_data(main_path, n_participants, ...
-                        onsets_2_3, partition1, type_of_analysis);
+                        onsets_6_7, partition1, type_of_analysis);
                     [p2_67, po_p2_67] = load_postprocessed_data(main_path, n_participants, ...
-                        onsets_2_3, partition2, type_of_analysis);
+                        onsets_6_7, partition2, type_of_analysis);
                     [p3_67, po_p3_67] = load_postprocessed_data(main_path, n_participants, ...
-                        onsets_2_3, partition3, type_of_analysis);
+                        onsets_6_7, partition3, type_of_analysis);
 
                     partition = 1;
                     [design_p1_67, p1_67] = create_design_matrix_partitions(po_p1_67, p1_67, ...
@@ -1038,7 +1038,7 @@ end
                 cfg.correctm = 'cluster';
                 cfg.neighbours = neighbours;
                 cfg.clusteralpha = 0.025;
-                cfg.numrandomization = 100;
+                cfg.numrandomization = 750;
                 cfg.tail = 0;
                 cfg.design = design_matrix;
                 cfg.computeprob = 'yes';
@@ -3184,19 +3184,19 @@ elseif strcmp(experiment_type,'pure-factor-effect') || strcmp(experiment_type,'f
         pos5 = [0.425, 0.5, 0.15, 0.35];   % Second plot (half width)
         pos6 = [0.6, 0.5, 0.35, 0.35];     % Third plot (larger width)
     else
-        % Row 1
+            % Row 1
+        % Define the positions for the plots, keeping (2,1) and (2,3) empty
     % Define the positions for the plots, keeping (2,1) and (2,3) empty
-% Define the positions for the plots, keeping (2,1) and (2,3) empty
-% Increasing width for pos1, pos3, pos4, and pos6
-pos1 = [0.05, 0.6, 0.325, 0.25];   % Row 1, Col 1 (wider)
-pos2 = [0.415, 0.6, 0.125, 0.25];  % Row 1, Col 2 (narrower)
-pos3 = [0.57, 0.6, 0.325, 0.25];   % Row 1, Col 3 (wider)
-
-posMiddle = [0.415, 0.39, 0.125, 0.15]; % Row 2, Col 2 (centered and narrower)
-
-pos4 = [0.05, 0.1, 0.325, 0.25];   % Row 3, Col 1 (wider)
-pos5 = [0.415, 0.1, 0.125, 0.25];  % Row 3, Col 2 (narrower)
-pos6 = [0.57, 0.1, 0.325, 0.25];   % Row 3, Col 3 (wider)
+    % Increasing width for pos1, pos3, pos4, and pos6
+    pos1 = [0.05, 0.6, 0.325, 0.25];   % Row 1, Col 1 (wider)
+    pos2 = [0.415, 0.6, 0.125, 0.25];  % Row 1, Col 2 (narrower)
+    pos3 = [0.57, 0.6, 0.325, 0.25];   % Row 1, Col 3 (wider)
+    
+    posMiddle = [0.415, 0.39, 0.125, 0.15]; % Row 2, Col 2 (centered and narrower)
+    
+    pos4 = [0.05, 0.1, 0.325, 0.25];   % Row 3, Col 1 (wider)
+    pos5 = [0.415, 0.1, 0.125, 0.25];  % Row 3, Col 2 (narrower)
+    pos6 = [0.57, 0.1, 0.325, 0.25];   % Row 3, Col 3 (wider)
     end
     
     labels_text_size = 8;
@@ -3535,13 +3535,67 @@ set(gca, 'Position', pos6); % Adjust the size and position
 
 
 elseif strcmp(experiment_type, 'three-way-interaction')
+    disp("....")
+    figure;
+    line_plot_effect = 135;
+    plot_thin_med_thick = 1;
+    if plot_thin_med_thick
+% Row 1 (with center plot)
+pos1 = [0.1, 0.78, 0.3, 0.12];          % 0.1, 0.8, 0.3, 0.12
+posMiddle1 = [0.4, 0.65, 0.2, 0.25];  % Center plot, aligned with Rows 1 & 2
+pos3 = [0.6, 0.78, 0.3, 0.12];          % Row 1, Col 3 (wider to the left)
+
+% Row 2 (no center plot)
+pos4 = [0.1, 0.65, 0.3, 0.12];         % Row 2, Col 1 (wider to the right)
+pos5 = [0.6, 0.65, 0.3, 0.12];         % Row 2, Col 3 (wider to the left)
+
+% Row 3 (with center plot)
+pos6 = [0.1, 0.48, 0.3, 0.12];          % Row 3, Col 1 (wider to the right)
+posMiddle3 = [0.4, 0.35, 0.2, 0.25];  % Center plot, aligned with Rows 3 & 4
+pos7 = [0.6, 0.48, 0.3, 0.12];          % Row 3, Col 3 (wider to the left)
+
+% Row 4 (no center plot)
+pos8 = [0.1, 0.35, 0.3, 0.12];         % Row 4, Col 1 (wider to the right)
+pos9 = [0.6, 0.35, 0.3, 0.12];         % Row 4, Col 3 (wider to the left)
+
+% Row 5 (with center plot)
+pos10 = [0.1, 0.18, 0.3, 0.12];         % Row 5, Col 1 (wider to the right)
+posMiddle5 = [0.4, 0.05, 0.2, 0.25];  % Center plot, aligned with Rows 5 & 6
+pos11 = [0.6, 0.18, 0.3, 0.12];         % Row 5, Col 3 (wider to the left)
+
+% Row 6 (no center plot)
+pos12 = [0.1, 0.05, 0.3, 0.12];        % Row 6, Col 1 (wider to the right)
+pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
+
+        % subplot("Position", pos1);
+        % subplot("Position", posMiddle1);
+        % subplot("Position", pos3);
+        % subplot("Position", pos4);
+        % subplot("Position", pos5);
+        % subplot("Position", pos6);
+        % subplot("Position", posMiddle3);
+        % subplot("Position", pos7);
+        % subplot("Position", pos8);
+        % subplot("Position", pos9);
+        % subplot("Position", pos10);
+        % subplot("Position", posMiddle5);
+        % subplot("Position", pos11);
+        % subplot("Position", pos12);
+        % subplot("Position", pos13);
+    end
+
+    
     labels_text_size = 8;
     t = tiledlayout(6,2, 'TileSpacing','Compact');
     time = data{1}.time * 1000;
 
-    %%%%%%% PARTITION 1
+    
+    %% %%%%% PARTITION 1 LOW PANEL PGI
     % onsets 2;3, 4;5 6,7 for P1 low
-    nexttile
+    %subplot(6, 3,1);
+    subplot("Position", pos1)
+    set(gca, 'XTick', []);
+    %set(gca, 'Position', pos1); % Adjust the size and position
     hold on;
     %plot(NaN(1), 'Color', 'r');
     %plot(NaN(1), 'Color', 'g');
@@ -3583,14 +3637,15 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+    xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
     xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
 
 
     %xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
-    ylh = ylabel("PGI", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
-    ylh.Position(2) = 6;
+    ylh = ylabel("P1 - PGI", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
+    ylh.Position(2) = 10;
     ylh.Position(1) = -220;
 
     %yyaxis right
@@ -3603,12 +3658,59 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
+    set(gca, 'XTick', []);
     
-    %%%%%%%
-    %%%%%%%
-    % onsets 2;3, 4;5 6,7 for P1 high
-    %set(gca,'Color',[.85,.85,.85])
-    nexttile
+    %% %%%%% PARTITION 1 INTERACTION PANEL PGI
+    subplot("Position", posMiddle1);
+    set(gca, 'XTick', []);
+    set(gca, 'YTick', []);
+    grid on;
+    
+    % Find the index of the peak effect for plotting
+    [~, peak_effect_idx] = min(abs(data{1}.time - line_plot_effect / 1000));
+    
+    % Extract data values
+    p1_23_low = p1_23_l.dist_pgi_avg(peak_effect_idx);
+    p1_23_high = p1_23_h.dist_pgi_avg(peak_effect_idx);
+    p1_45_low = p1_45_l.dist_pgi_avg(peak_effect_idx);
+    p1_45_high = p1_45_h.dist_pgi_avg(peak_effect_idx);
+    p1_67_low = p1_67_l.dist_pgi_avg(peak_effect_idx);
+    p1_67_high = p1_67_h.dist_pgi_avg(peak_effect_idx);
+    
+    % Hold for multiple plots
+    hold on;
+    
+    % Data for partitions
+    partitions_1 = [p1_23_low, p1_23_high];
+    partitions_2 = [p1_45_low, p1_45_high];
+    partitions_3 = [p1_67_low, p1_67_high];
+    
+    % Plot each partition with different colors
+    plot(partitions_1, '-o', 'Color', 'r', 'LineWidth', plot_line_width, 'HandleVisibility', 'off');
+    plot(partitions_2, '-o', 'Color', 'g', 'LineWidth', plot_line_width, 'HandleVisibility', 'off');
+    plot(partitions_3, '-o', 'Color', 'b', 'LineWidth', plot_line_width, 'HandleVisibility', 'off');
+    
+    % Customize x-axis
+    xticks([1 2]);
+    % xticklabels({'LOW', 'HIGH'});  % Uncomment if custom x-tick labels are needed
+    
+    % Remove x-axis labels
+    set(gca, 'XTickLabelMode', 'manual', 'XTickMode', 'manual');
+    
+    % Set y-axis limits
+    ylim([-1, 4]);
+
+    ax = gca;
+    ax.YAxisLocation = 'left'; % Position y-axis on the left side
+    ax.TickDir = 'in'; % Move ticks to the inside
+    
+    % Title
+    title("P1 - LOW vs. HIGH", 'FontSize', 18);
+    %% %%%%% PARTITION 1 HIGH PANEL PGI
+   % subplot(6, 3,3);
+    %set(gca, 'Position', pos3); % Adjust the size and position
+    subplot("Position", pos3)
+    set(gca, 'YTick', []);
     hold on;
     plot(NaN(1), 'Color', 'r');
     plot(NaN(1), 'Color', 'g');
@@ -3651,6 +3753,7 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+    xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
     xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
 
@@ -3663,9 +3766,11 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
-    %%%%%%%
-    % onsets 2;3, 4;5 6,7 for P1 medium low
-    nexttile
+    set(gca, 'XTick', []);
+    %% %%%%% PARTITION 1 LOW PANEL MEDIUM
+    %subplot(6, 3,4);
+    %set(gca, 'Position', pos4); % Adjust the size and position
+    subplot("Position", pos4);
     hold on;
     %plot(NaN(1), 'Color', 'r');
     %plot(NaN(1), 'Color', 'g');
@@ -3713,8 +3818,8 @@ elseif strcmp(experiment_type, 'three-way-interaction')
 
     %xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
-    ylh = ylabel("Medium", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
-    ylh.Position(2) =8;
+    ylh = ylabel("P1 - Medium", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
+    ylh.Position(2) =12;
     ylh.Position(1) = -220;
 
     %yyaxis right
@@ -3731,7 +3836,11 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.45 0.45 0.45], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
-    nexttile
+    %% %%%%% PARTITION 1 HIGH PANEL MEDIUM
+    %subplot(6, 3,5);
+    %set(gca, 'Position', pos5); % Adjust the size and position
+    subplot("Position", pos5);
+    set(gca, 'YTick', []);
     hold on;
     plot(NaN(1), 'Color', 'r');
     plot(NaN(1), 'Color', 'g');
@@ -3766,7 +3875,7 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     set(h,'facealpha',.10) 
 
     xlim(plotting_window);
-    ylim([-4, 12])
+    ylim([-2, 8.5])
     grid on;
     %title("Medium","FontSize", 13)
     hold off;
@@ -3783,13 +3892,14 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.45 0.45 0.45], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
-
-    %%%%%%% PARTITION 1
-
-    %%%%%%% PARTITION 2
-    % onsets 2;3, 4;5 6,7 for P2 low
-    nexttile
+    
+    %% %%%%% PARTITION 2 LOW PANEL PGI
+    %subplot(6, 3,6);
+    %set(gca, 'Position', pos6); % Adjust the size and position
+    subplot("Position", pos6);
+    set(gca, 'XTick', []);
     hold on;
+
     %plot(NaN(1), 'Color', 'r');
     %plot(NaN(1), 'Color', 'g');
     %plot(NaN(1), 'Color', 'b');
@@ -3831,13 +3941,14 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+    xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
     xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
 
     %xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
-    ylh = ylabel("PGI", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
-    ylh.Position(2) = 6;
+    ylh = ylabel("P2 - PGI", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
+    ylh.Position(2) = 10;
     ylh.Position(1) = -220;
 
     %yyaxis right
@@ -3850,9 +3961,50 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
-    %%%%%%% PARTITION 2
+    set(gca, 'XTick', []);
+        %% %%%%% PARTITION 2 INTERACTION PANEL PGI
+     %subplot(6, 3,7);
+    %set(gca, 'Position', posMiddle3); % Adjust the size and position
+    subplot("Position", posMiddle3);
+    set(gca, 'YTick', []);
+    grid on;
+    [~, peak_effect_idx] = min(abs(data{1}.time - line_plot_effect/1000));
+
+    p1_23_low = p2_23_l.dist_pgi_avg(peak_effect_idx);
+    p1_23_high = p2_23_h.dist_pgi_avg(peak_effect_idx);
+    
+    p1_45_low = p2_45_l.dist_pgi_avg(peak_effect_idx);
+    p1_45_high = p2_45_h.dist_pgi_avg(peak_effect_idx);
+
+    p1_67_low = p2_67_l.dist_pgi_avg(peak_effect_idx);
+    p1_67_high = p2_67_h.dist_pgi_avg(peak_effect_idx);
+
+    hold on;
+
+    partitions_1 = [p1_23_low, p1_23_high];
+    partitions_2 = [p1_45_low, p1_45_high];
+    partitions_3 = [p1_67_low, p1_67_high];
+
+    plot(partitions_1, '-o','color', 'r' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+    plot(partitions_2,  '-o','color', 'g' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+    plot(partitions_3, '-o','color','b','LineWidth', plot_line_width,'HandleVisibility','off');
+        % Customize x-axis labels
+    xticks([1 2]);                 % Set x-tick positions
+    %xticklabels({'LOW', 'HIGH'});   % Replace numeric x-ticks with custom labels
+    
+    % Remove x-axis numeric labels
+    set(gca, 'XTickLabelMode', 'manual', 'XTickMode', 'manual');
+    ylim([-1, 4])
+    grid on;
+    title("P2 - LOW vs. HIGH",'FontSize', 18);
+
+    %% %%%%% PARTITION 2 HIGH PANEL PGI
     % onsets 2;3, 4;5 6,7 for P2 high
-    nexttile
+    %subplot(6, 3,8);
+    %set(gca, 'Position', pos7); % Adjust the size and position
+    subplot("Position", pos7);
+    set(gca, 'XTick', []);
+    set(gca, 'YTick', []);
     hold on;
     plot(NaN(1), 'Color', 'r');
     plot(NaN(1), 'Color', 'g');
@@ -3896,6 +4048,7 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+    xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
     xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
 
@@ -3906,9 +4059,11 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
-    %%%%%%%
-    % onsets 2;3, 4;5 6,7 for P2 medium low
-    nexttile
+    %% %%%%% PARTITION 2 LOW PANEL MEDIUM
+    % onsets 2;3, 4;5 6,7 for P2 high
+    %subplot(6, 3,9);
+    %set(gca, 'Position', pos8); % Adjust the size and position
+    subplot("Position", pos8);
     %set(gca,'Color',[.85,.85,.85])
     hold on;
     %plot(NaN(1), 'Color', 'r');
@@ -3957,8 +4112,8 @@ elseif strcmp(experiment_type, 'three-way-interaction')
 
     %xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
-    ylh = ylabel("Medium", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
-    ylh.Position(2) =8;
+    ylh = ylabel("P2 - Medium", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
+    ylh.Position(2) =12;
     ylh.Position(1) = -220;
 
     %yyaxis right
@@ -3969,9 +4124,12 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.45 0.45 0.45], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
-    %%%%%%%
-    % onsets 2;3, 4;5 6,7 for P2 medium high
-    nexttile
+    %% %%%%% PARTITION 2 HIGH PANEL MEDIUM
+    % onsets 2;3, 4;5 6,7 for P2 high
+    %subplot(6, 3,10);
+    %set(gca, 'Position', pos9); % Adjust the size and position
+    subplot("Position", pos9);
+    set(gca, 'YTick', []);
     hold on;
     plot(NaN(1), 'Color', 'r');
     plot(NaN(1), 'Color', 'g');
@@ -4024,9 +4182,11 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.45 0.45 0.45], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
-%%%%%%% PARTITION 3
-    % onsets 2;3, 4;5 6,7 for P3 low
-    nexttile
+    %% %%%%% PARTITION 3 LOW PANEL PGI
+    % onsets 2;3, 4;5 6,7 for P2 high
+    %subplot(6, 3,11);
+    %set(gca, 'Position', pos10); % Adjust the size and position
+    subplot("Position", pos10);
     hold on;
     %plot(NaN(1), 'Color', 'r');
     %plot(NaN(1), 'Color', 'g');
@@ -4069,13 +4229,14 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+    xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
     xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
 
     %xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
-    ylh = ylabel("PGI", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
-    ylh.Position(2) = 6;
+    ylh = ylabel("P3 - PGI", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
+    ylh.Position(2) = 9;
     ylh.Position(1) = -220;
 
     %yyaxis right
@@ -4088,10 +4249,55 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
-    %%%%%%%
-    % onsets 2;3, 4;5 6,7 for P3 high
-    nexttile
+    set(gca, 'XTick', []);
+
+    %% %%%%% PARTITION 3 INTERACTION PANEL PGI
+    % onsets 2;3, 4;5 6,7 for P2 high
+    %subplot(6, 3,12);
+    %set(gca, 'Position', posMiddle5); % Adjust the size and position
+    subplot("Position", posMiddle5);
+    hold on ;
+    set(gca, 'XTick', []);
+    set(gca, 'YTick', []);
+    grid on;
+
+    [~, peak_effect_idx] = min(abs(data{1}.time - line_plot_effect/1000));
+
+    p1_23_low = p3_23_l.dist_pgi_avg(peak_effect_idx);
+    p1_23_high = p3_23_h.dist_pgi_avg(peak_effect_idx);
     
+    p1_45_low = p3_45_l.dist_pgi_avg(peak_effect_idx);
+    p1_45_high = p3_45_h.dist_pgi_avg(peak_effect_idx);
+
+    p1_67_low = p3_67_l.dist_pgi_avg(peak_effect_idx);
+    p1_67_high = p3_67_h.dist_pgi_avg(peak_effect_idx);
+
+    hold on;
+
+    partitions_1 = [p1_23_low, p1_23_high];
+    partitions_2 = [p1_45_low, p1_45_high];
+    partitions_3 = [p1_67_low, p1_67_high];
+
+    plot(partitions_1, '-o','color', 'r' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+    plot(partitions_2,  '-o','color', 'g' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+    plot(partitions_3, '-o','color','b','LineWidth', plot_line_width,'HandleVisibility','off');
+        % Customize x-axis labels
+    xticks([1 2]);                 % Set x-tick positions
+    %xticklabels({'LOW', 'HIGH'});   % Replace numeric x-ticks with custom labels
+    
+    % Remove x-axis numeric labels
+    set(gca, 'XTickLabelMode', 'manual', 'XTickMode', 'manual');
+    grid on;
+    ylim([-1, 4])
+    title("P3 - LOW vs. HIGH",'FontSize', 18);
+
+    %% %%%%% PARTITION 3 HIGH PANEL PGI
+    % onsets 2;3, 4;5 6,7 for P2 high
+    %subplot(6, 3,13);
+    %set(gca, 'Position', pos11); % Adjust the size and position
+    subplot("Position", pos11);
+    set(gca, 'YTick', []);
+    set(gca, 'XTick', []);
     hold on;
     plot(NaN(1), 'Color', 'r');
     plot(NaN(1), 'Color', 'g');
@@ -4134,6 +4340,7 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
     xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+    xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
     xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
 
@@ -4144,9 +4351,13 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
-    %%%%%%%
-    % onsets 2;3, 4;5 6,7 for P3 medium low
-    nexttile
+    set(gca, 'XTick', []);
+
+    %% %%%%% PARTITION 3 LOW PANEL MEDIUM
+    % onsets 2;3, 4;5 6,7 for P2 high
+    %subplot(6, 3,13);
+    %set(gca, 'Position', pos12); % Adjust the size and position
+    subplot("Position", pos12);
     hold on;
     %plot(NaN(1), 'Color', 'r');
     %plot(NaN(1), 'Color', 'g');
@@ -4194,8 +4405,8 @@ elseif strcmp(experiment_type, 'three-way-interaction')
 
     %xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
-    ylh = ylabel("Medium", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
-    ylh.Position(2) =8;
+    ylh = ylabel("P3 - Medium", "FontSize",12, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
+    ylh.Position(2) =11;
     ylh.Position(1) = -220;
 
    % yyaxis right
@@ -4210,7 +4421,12 @@ elseif strcmp(experiment_type, 'three-way-interaction')
     % Shade the region after end_peak
     xregion([end_peak, inf], 'FaceColor', [0.45 0.45 0.45], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
-    nexttile
+    %% %%%%% PARTITION 3 HIGH PANEL MEDIUM
+    % onsets 2;3, 4;5 6,7 for P2 high
+    %subplot(6, 3,14);
+   % set(gca, 'Position', pos13); % Adjust the size and position
+        subplot("Position", pos13);
+    set(gca, 'YTick', []);
     hold on;
     plot(NaN(1), 'Color', 'r');
     plot(NaN(1), 'Color', 'g');
@@ -5234,7 +5450,7 @@ set(gca, 'Position', pos6); % Adjust the size and position
 
 end
 
-cluster_stats = "Cluster: P-value: " + num2str(round(0.045, 3)) + ", Mass: " + num2str(cluster_size);
+cluster_stats = "Cluster: P-value: " + num2str(round(pvalue, 3)) + ", Mass: " + num2str(cluster_size);
 peak_stats = "Max sample: T" + "(" + num2str(df) + ")=" + num2str(t_value) ...
     + " Cohen's d: " + num2str(cohens_d) + ", Correlation: " + num2str(effect_size);
 
@@ -5260,11 +5476,11 @@ if contains(experiment_type, 'partitions-2-8') && first_partition_regresion ~= 1
         exportgraphics(gcf,save_dir,'Resolution',500);
     end
 elseif contains(experiment_type, 'three-way-interaction')
-   set(gcf,'Position',[100 100 1250 1250])
-    p1 = text(-920, 90, 'Partition 1', 'Fontsize', 18, 'Rotation', 90, "FontWeight","bold");
-    p2 = text(-920, 50, 'Partition 2', 'Fontsize', 18, 'Rotation', 90, "FontWeight","bold");
-    p3 = text(-920, 10, 'Partition 3', 'Fontsize', 18, 'Rotation', 90, "FontWeight","bold");
-    exportgraphics(gcf,save_dir,'Resolution',500);
+   set(gcf,'Position',[1   49    1536    836.8])
+    %p1 = text(-1800, 95, 'Partition 1', 'Fontsize', 12, 'Rotation', 90, "FontWeight","bold");
+    %p2 = text(-1800, 65, 'Partition 2', 'Fontsize', 12, 'Rotation', 90, "FontWeight","bold");
+   % p3 = text(-1800, 55, 'Partition 3', 'Fontsize', 12, 'Rotation', 90, "FontWeight","bold");
+    exportgraphics(gcf,save_dir,'Resolution',750);
 else
     set(gcf,'Position',[1 49.8 1536 836])
     exportgraphics(gcf,save_dir,'Resolution',500);
