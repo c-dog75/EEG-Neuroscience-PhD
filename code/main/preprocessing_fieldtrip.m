@@ -12,11 +12,11 @@ cd("C:\Users\CDoga\Documents\Research\preprocessing\after_spm_script");
 %% Change these variables depending on what you would like to do.
 main_path = 'C:\Users\CDoga\Documents\Research\PhD\participant_';
 
-to_preprocess = {'partitions'};
-type_of_analysis = 'time_domain'; % or time_domain
+to_preprocess = {'mean_intercept'};
+type_of_analysis = 'frequency_domain'; % or time_domain
 
 onsets = [
-    2,3; 4,5; 6,7 
+    2,3; 4,5; 6,7
 ];
 
 number_of_onsets = size(onsets);

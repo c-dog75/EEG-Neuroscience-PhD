@@ -10,14 +10,14 @@ ft_defaults;
 cd(master_dir);
 
 %% WHAT TYPE OF EXPERIMENT(s) ARE WE RUNNING?
-experiment_types = {'three-way-interaction'};
+experiment_types = {'pure-factor-effect'};
 desired_design_mtxs = {"headache"};
 type_of_interaction = 'habituation';
 start_latency = 0.056;
 end_latency = 0.256;
 
 %% SHALL WE APPLY A ROI, IF SO HOW?
-region_of_interest = 1 ;
+region_of_interest =0 ;
 roi_applied = 'two-tailed';
 weight_roi = 0;
 roi_to_apply = 0;
@@ -37,9 +37,9 @@ if strcmp(type_of_analysis, 'frequency_domain') || strcmp(type_of_analysis, 'fre
     analyse_spectrogram = 1 ; % analysis on the aggregate power data?
     frequency_level = 'trial-level'; % freq analyses on 'participant-level' or 'trial-level'
     extract_timeseries_values = 0;
-    toi = [0.056, 0.256];
+    toi = [0.5, 3.05];
     foi_of_interest = [[10, 15]; [20, 30]; [30,45]; [45, 60]; [60, 80]];
-    %foi_of_interest = [[10, 80]];
+    %foi_of_interest = [[45, 60]; [60, 80]];
     analysis = 'load'; % 'load' or 'preprocess'
 elseif strcmp(type_of_analysis, 'time_domain') || strcmp(type_of_analysis, 'time_domain_p1')
     disp('RUNNING A TIME-DOMAIN ANALYSIS');
@@ -78,8 +78,6 @@ end
                 save_path = strcat(results_dir, '/', type_of_analysis, '/ ', time_name,'/','factor-effect', '/', desired_design_mtx);
             elseif strcmp(experiment_types, 'three-way-interaction')
                 save_path = strcat(results_dir, '/', type_of_analysis, '/', time_name,'/','three-way-interaction', '/', desired_design_mtx);
-            elseif strcmp(experiment_types, 'trial-level-2-8')
-                save_path = strcat(results_dir, '/', tpye_of_analysis, '/', time_name,'/','trial_level');
             end
 
             % check if its a frequency experiment
@@ -576,15 +574,15 @@ end
 
                     p1_freq = to_frequency_data(main_path, partition, ...
                         analysis, frequency_level, foi, ...
-                        'erp23_', data_file23, n_participants);
+                        'erp23_', data_file23, n_participants, toi);
 
                     p2_freq = to_frequency_data(main_path, partition, ...
                         analysis, frequency_level, foi, ...
-                        'erp45_', data_file45, n_participants);
+                        'erp45_', data_file45, n_participants, toi);
 
                     p3_freq = to_frequency_data(main_path, partition, ...
                         analysis, frequency_level, foi, ...
-                        'erp67_', data_file67, n_participants);
+                        'erp67_', data_file67, n_participants, toi);
                     
                     if strcmp(analysis, 'preprocess')
                         continue;
@@ -646,7 +644,7 @@ end
 
                          freq = to_frequency_data(main_path, partition, ...
                         analysis, frequency_level, foi, ...
-                        'mean_intercept', data_file, n_participants);
+                        'mean_intercept', data_file, n_participants, toi);
                     n_part = numel(data);
 
                     [design1, new_participants1] = create_design_matrix_partitions(participant_order_1, freq, ...
@@ -697,15 +695,15 @@ end
 
                     p1_freq = to_frequency_data(main_path, partition1, ...
                         analysis, frequency_level, foi, ...
-                        'partition_', data_file, n_participants);
+                        'partition_', data_file, n_participants, toi);
 
                     p2_freq = to_frequency_data(main_path, partition2, ...
                      analysis, frequency_level, foi, ...
-                         'partition_', data_file, n_participants);
+                         'partition_', data_file, n_participants, toi);
 
                     p3_freq = to_frequency_data(main_path, partition3, ...
                         analysis, frequency_level, foi, ...
-                        'partition_', data_file, n_participants);
+                        'partition_', data_file, n_participants, toi);
 
                     if strcmp(analysis, 'preprocess')
                         continue;
@@ -767,7 +765,7 @@ end
                     
                     freq = to_frequency_data(main_path, partition, ...
                         analysis, frequency_level, foi, ...
-                        'mean_intercept', data_file, n_participants);
+                        'mean_intercept', data_file, n_participants, toi);
 
                     if strcmp(analysis, 'preprocess')
                         continue;
@@ -826,15 +824,15 @@ end
 
                     p1_23 = to_frequency_data(p1_23, main_path, 1, ...
                         po_p1_23, analysis, frequency_level, foi, ...
-                        'p123_');
+                        'p123_', toi);
 
                     p2_23 = to_frequency_data(p2_23, main_path, 2, ...
                         po_p2_23, analysis, frequency_level, foi, ...
-                        'p223_');
+                        'p223_', toi);
 
                     p3_23 = to_frequency_data(p3_23, main_path, 3, ...
                         po_p3_23, analysis, frequency_level, foi, ...
-                        'p323_');
+                        'p323_', toi);
 
                     partition = 1;
                     [design_p1_23, p1_23] = create_design_matrix_partitions(po_p1_23, p1_23, ...
@@ -860,15 +858,15 @@ end
 
                     p1_45 = to_frequency_data(p1_45, main_path, 1, ...
                         po_p1_45, analysis, frequency_level, foi, ...
-                        'p145');
+                        'p145', toi);
 
                     p2_45 = to_frequency_data(p2_45, main_path, 2, ...
                         po_p2_45, analysis, frequency_level, foi, ...
-                        'p245_');
+                        'p245_', toi);
 
                     p3_45 = to_frequency_data(p3_45, main_path, 3, ...
                         po_p3_45, analysis, frequency_level, foi, ...
-                        'p345_');
+                        'p345_', toi);
 
                     partition = 1;
                     [design_p1_45, p1_45] = create_design_matrix_partitions(po_p1_45, p1_45, ...
@@ -894,15 +892,15 @@ end
 
                     p1_67 = to_frequency_data(p1_67, main_path, 1, ...
                         po_p1_45, analysis, frequency_level, foi, ...
-                        'p167');
+                        'p167', toi);
 
                     p2_67 = to_frequency_data(p2_67, main_path, 2, ...
                         po_p2_45, analysis, frequency_level, foi, ...
-                        'p267_');
+                        'p267_', toi);
 
                     p3_67 = to_frequency_data(p3_67, main_path, 3, ...
                         po_p3_45, analysis, frequency_level, foi, ...
-                        'p367_');
+                        'p367_', toi);
 
                     partition = 1;
                     [design_p1_67, p1_67] = create_design_matrix_partitions(po_p1_67, p1_67, ...
@@ -1038,7 +1036,7 @@ end
                 cfg.correctm = 'cluster';
                 cfg.neighbours = neighbours;
                 cfg.clusteralpha = 0.025;
-                cfg.numrandomization = 750;
+                cfg.numrandomization = 1000;
                 cfg.tail = 0;
                 cfg.design = design_matrix;
                 cfg.computeprob = 'yes';
@@ -1063,6 +1061,7 @@ end
                             || contains(experiment_type, 'trial-level-2-8') || contains(experiment_type, 'pure-factor-effect')
                         cfg.ivar = 1;
                         cfg.clusterthreshold = 'nonparametric_individual';
+                        cfg.statistic = 'ft_statfun_indepsamplesregrTMeanIntercept';
                         stat = ft_timelockstatistics(cfg, data{:});
 
                         %disp(stat.posclusters(1).prob)
@@ -1074,7 +1073,7 @@ end
                         end
                     end
                 elseif strcmp(type_of_analysis, 'frequency_domain')
-                    if contains(experiment_type, 'onsets-2-8-explicit')
+                    if contains(experiment_type, 'onsets-2-8-explicit')     
                         desired_cluster = 1;
                         cfg.uvar = 1;
                         cfg.ivar = 2;
@@ -1084,8 +1083,9 @@ end
                         stat = ft_freqstatistics(cfg, data{:}, null_data{:});
                         save(strcat(new_save_path, '/stat.mat'), 'stat')
                         roi_name = "roi_" + "freq_" +  int2str(foi(1)) + "_" + int2str(foi(2));
-                        get_region_of_interest_electrodes(stat, desired_cluster, roi_name);
+                        %get_region_of_interest_electrodes(stat, desired_cluster, roi_name);
                     else
+                        cfg.clusterthreshold = 'nonparametric_individual';
                         cfg.frequency = [foi(1) foi(2)];
                         cfg.ivar = 1;
                         cfg.avgoverfreq = 'yes';
@@ -1152,7 +1152,7 @@ end
                                 generate_peak_erps(master_dir, main_path, experiment_type, ...
                                     stat, pos_cluster_peak_level_data{i}, 'positive', desired_design_mtx, i, ...
                                     new_save_path, weight_erps, weighting_factor, ...
-                                    type_of_analysis, foi, plot_thin_med_thick);
+                                    type_of_analysis, foi, plot_thin_med_thick, toi);
                             end
                         end
                     end
@@ -1188,9 +1188,9 @@ end
                 %end
 
                 %% make pretty plots
-               if create_topographic_maps == 1
+               if create_topographic_maps == 1 &&  numel(stat.posclusters) > 0
                     create_viz_topographic_maps(data, stat, start_latency, end_latency, ...
-                        0.05, 'positive', new_save_path, type_of_analysis)
+                        0.05, 'positive', new_save_path, type_of_analysis, toi)
 
                     %% plot the peak electrode
                     create_viz_peak_electrode(stat, first_pos_peak_level_stats, new_save_path)
@@ -1248,6 +1248,7 @@ cfg.highlightcolor = {'r', [0 0 1]};
 cfg.highlightsize = 10;
 cfg.comment = 'no';
 cfg.style = 'blank';
+
 
 ft_topoplotER(cfg, stat);
 
@@ -1556,7 +1557,7 @@ end
 %% generate ERPs
     function generate_peak_erps(master_dir, main_path, experiment_type, ...
     stat, peak_information, effect_type, regression_type, desired_cluster, ...
-    save_dir, weight_erps, weighting_factor, type_of_analysis, foi, plot_thin_med_thick)
+    save_dir, weight_erps, weighting_factor, type_of_analysis, foi, plot_thin_med_thick, toi)
 
 df = stat.df;
 time = stat.time;
@@ -1598,7 +1599,8 @@ save_dir = strcat(save_dir, '/', plot_desc);
 generate_plots(master_dir, main_path, experiment_type, start_of_effect,...
     end_of_effect, peak_electrode, peak_time, peak_t_value, df, ...
     regression_type, pvalue, cluster_size, save_dir, effect_type, ...
-    weight_erps, weighting_factor, type_of_analysis, foi, desired_cluster, plot_thin_med_thick)
+    weight_erps, weighting_factor, type_of_analysis, foi, desired_cluster, plot_thin_med_thick, ...
+    toi)
 
 close;
 end
@@ -1967,7 +1969,7 @@ end
 end
 %% used to create the topographic maps
 function create_viz_topographic_maps(data1, stat, start_latency, ...
-    end_latency, alpha, type, save_dir, analysis_type)
+    end_latency, alpha, type, save_dir, analysis_type, toi)
 
 
 if numel(stat.negclusters) < 1 && strcmp(type, 'negative')
@@ -1980,37 +1982,22 @@ end
 stat.stat(isnan(stat.stat))=0;
 
 if strcmp(analysis_type, 'frequency_domain')
-    %fixes the interpolation issue of NaNs
     stat.stat(isnan(stat.stat))=0;
-
-    timestep = 0.015; % in seconds (50ms)
-    sampling_rate = 512;
-    sample_count  = length(stat.time);
+    timestep = 0.25; % in seconds (50ms)
 
     j = [start_latency:timestep:end_latency]; % Temporal endpoints (in seconds) of the ERP average computed in each subplot
     [i1,i2] = match_str(data1{1}.label, stat.label);
 
-    if strcmp(type,'positive')
-        pos_cluster_pvals = [stat.posclusters(:).prob];
-        pos_clust = find(pos_cluster_pvals < 0.05);
-        pos = ismember(stat.posclusterslabelmat, pos_clust);
-        save_dir = strcat(save_dir, '/', 'positive_topographic.png');
-        if isempty(pos_clust)
-            clust = zeros(128,1,401); %401 before
-        else
-            clust = pos;
-        end
-    elseif strcmp(type,'negative')
-        neg_cluster_pvals = [stat.negclusters(:).prob];
-        neg_clust = find(neg_cluster_pvals < 0.05);
-        neg = ismember(stat.negclusterslabelmat, neg_clust);
-        if isempty(neg_clust)
-            clust = zeros(128,1,401); %401 before
-        else
-            clust = neg;
-        end
-        save_dir = strcat(save_dir, '/', 'negative_topographic.png');
+    pos_cluster_pvals = [stat.posclusters(:).prob];
+    pos_clust = find(pos_cluster_pvals < 0.05);
+    pos = ismember(stat.posclusterslabelmat, pos_clust);
+    save_dir = strcat(save_dir, '/', 'positive_topographic.png');
+    if isempty(pos_clust)
+        clust = zeros(size(stat.stat)); %401 before
+    else
+        clust = pos;
     end
+
 
     max_t = max(stat.stat, [], 'all');
     max_t = round(max_t, 2);
@@ -2660,10 +2647,19 @@ end
 function generate_plots(master_dir, main_path, experiment_type, start_peak, ...
     end_peak, peak_electrode, peak_effect, t_value, df, regression_type, ...
     pvalue, cluster_size, save_dir, effect_type, weight_erps, weighting_factor, ...
-    type_of_analysis, foi, desired_cluster, plot_thin_med_thick)
+    type_of_analysis, foi, desired_cluster, plot_thin_med_thick, toi)
 
 
-plotting_window = [-200, 300];
+start_plotting = toi(1) * 1000;
+start_plotting = start_plotting - 200;
+end_plotting = toi(2) * 1000;
+end_plotting = end_plotting + 200;
+
+start_plotting = -200;
+end_plotting = 300;
+
+
+plotting_window = [start_plotting,  end_plotting];
 %rmpath C:/ProgramFiles/spm8;
 %addpath C:/ProgramFiles/spm12;
 cd(master_dir);
@@ -2685,7 +2681,7 @@ if strcmp(experiment_type, 'onsets-2-8-explicit')
         data_file = 'frequency_domain_mean_intercept_onsets_2_3_4_5_6_7_8_grand-average.mat';
         freq = to_frequency_data(main_path, partition, ...
             'load', 'trial-level', foi, ...
-            'mean_intercept', data_file, n_participants);
+            'mean_intercept', data_file, n_participants, toi);
         n_part = numel(freq);
 
         e_idx = find(contains(freq{1}.pgi.label,peak_electrode));
@@ -2727,7 +2723,7 @@ elseif strcmp(experiment_type, 'pure-factor-effect') || strcmp(experiment_type, 
        
         freq = to_frequency_data(main_path, partition, ...
             'load', 'trial-level', foi, ...
-            'mean_intercept', data_file, n_participants);
+            'mean_intercept', data_file, n_participants, toi);
 
         data1 = format_for_plotting_functions(freq);
 
@@ -2813,15 +2809,15 @@ elseif strcmp(experiment_type, 'partitions (no factor)') || strcmp(experiment_ty
 
         p1_freq = to_frequency_data(main_path, partition1, ...
             'load', 'trial-level', foi, ...
-            'partition_', data_file, n_participants);
+            'partition_', data_file, n_participants, toi);
 
         p2_freq = to_frequency_data(main_path, partition2, ...
             'load', 'trial-level', foi, ...
-            'partition_', data_file, n_participants);
+            'partition_', data_file, n_participants, toi);
 
         p3_freq = to_frequency_data(main_path, partition3, ...
             'load', 'trial-level', foi, ...
-            'partition_', data_file, n_participants);
+            'partition_', data_file, n_participants, toi);
         
         data1 = format_for_plotting_functions(p1_freq);
         data2 = format_for_plotting_functions(p2_freq);
@@ -2994,15 +2990,15 @@ elseif strcmp(experiment_type, 'erps-23-45-67') || strcmp(experiment_type, 'erps
 
         p1_freq = to_frequency_data(main_path, partition, ...
             'load', 'trial-level', foi, ...
-            'erp23_', data_file23, n_participants);
+            'erp23_', data_file23, n_participants, toi);
 
         p2_freq = to_frequency_data(main_path, partition, ...
             'load', 'trial-level', foi, ...
-            'erp45_', data_file45, n_participants);
+            'erp45_', data_file45, n_participants, toi);
 
         p3_freq = to_frequency_data(main_path, partition, ...
             'load', 'trial-level', foi, ...
-            'erp67_', data_file67, n_participants);
+            'erp67_', data_file67, n_participants, toi);
 
         data1 = format_for_plotting_functions(p1_freq);
         data2 = format_for_plotting_functions(p2_freq);
@@ -3115,6 +3111,11 @@ if contains(experiment_type, 'onsets-2-8')
     %ylh.Position(2) = 2.75;
     %ylh.Position(1) = -220;
 
+        % Shade the region before start_peak
+    xregion([-inf, start_peak], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+    
+    % Shade the region after end_peak
+    xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
     nexttile
     hold on;
@@ -3160,6 +3161,13 @@ if contains(experiment_type, 'onsets-2-8')
     max_y = max([max(ci.dist_thick_high), max(ci.dist_thin_high), max(ci.dist_med_high)])+0.5;
     ylim([min_y, max_y])
 
+            % Shade the region before start_peak
+    xregion([-inf, start_peak], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+    
+    % Shade the region after end_peak
+    xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+
+
     %ylh = ylabel("Mean/Intercept", "FontSize",16, "Rotation", 0, 'HorizontalAlignment','right', "FontWeight", "bold");
     %ylh.Position(2) = 2.75;
     %ylh.Position(1) = -220;
@@ -3202,7 +3210,7 @@ elseif strcmp(experiment_type,'pure-factor-effect') || strcmp(experiment_type,'f
     labels_text_size = 8;
 
 
-    strcmp(experiment_type,'pure-factor-effect')
+  
     subplot(3,3,1);
     set(gca, 'Position', pos1); % Adjust the size and position
     time = data{1}.time * 1000;
@@ -3430,7 +3438,7 @@ elseif strcmp(experiment_type,'pure-factor-effect') || strcmp(experiment_type,'f
 
     %xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
-    ylh = ylabel("Medium", "FontSize",16, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
+    ylh = ylabel("Amplitude", "FontSize",16, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
     ylh.Position(2) = 3.5;
     ylh.Position(1) = -220;
 
@@ -3537,12 +3545,23 @@ set(gca, 'Position', pos6); % Adjust the size and position
 elseif strcmp(experiment_type, 'three-way-interaction')
     disp("....")
     figure;
-    line_plot_effect = 135;
+
+    if strcmp(regression_type, "Visual Stress") 
+        line_plot_effect = 226;
+    elseif strcmp(regression_type, "Headache")
+         line_plot_effect = 135;
+    elseif strcmp(regression_type, "Discomfort")
+        line_plot_effect = 200;
+        end
+
+
+    
     plot_thin_med_thick = 1;
     if plot_thin_med_thick
 % Row 1 (with center plot)
 pos1 = [0.1, 0.78, 0.3, 0.12];          % 0.1, 0.8, 0.3, 0.12
 posMiddle1 = [0.4, 0.65, 0.2, 0.25];  % Center plot, aligned with Rows 1 & 2
+posMiddle1 = [0.42, 0.65, 0.16, 0.25];
 pos3 = [0.6, 0.78, 0.3, 0.12];          % Row 1, Col 3 (wider to the left)
 
 % Row 2 (no center plot)
@@ -3552,6 +3571,7 @@ pos5 = [0.6, 0.65, 0.3, 0.12];         % Row 2, Col 3 (wider to the left)
 % Row 3 (with center plot)
 pos6 = [0.1, 0.48, 0.3, 0.12];          % Row 3, Col 1 (wider to the right)
 posMiddle3 = [0.4, 0.35, 0.2, 0.25];  % Center plot, aligned with Rows 3 & 4
+posMiddle3 = [0.42, 0.35, 0.16, 0.25];  % Center plot, aligned with Rows 3 & 4
 pos7 = [0.6, 0.48, 0.3, 0.12];          % Row 3, Col 3 (wider to the left)
 
 % Row 4 (no center plot)
@@ -3561,6 +3581,7 @@ pos9 = [0.6, 0.35, 0.3, 0.12];         % Row 4, Col 3 (wider to the left)
 % Row 5 (with center plot)
 pos10 = [0.1, 0.18, 0.3, 0.12];         % Row 5, Col 1 (wider to the right)
 posMiddle5 = [0.4, 0.05, 0.2, 0.25];  % Center plot, aligned with Rows 5 & 6
+posMiddle5 = [0.42, 0.05, 0.16, 0.25];  % Center plot, aligned with Rows 5 & 6
 pos11 = [0.6, 0.18, 0.3, 0.12];         % Row 5, Col 3 (wider to the left)
 
 % Row 6 (no center plot)
@@ -3662,9 +3683,7 @@ pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
     
     %% %%%%% PARTITION 1 INTERACTION PANEL PGI
     subplot("Position", posMiddle1);
-    set(gca, 'XTick', []);
-    set(gca, 'YTick', []);
-    grid on;
+    hold on;
     
     % Find the index of the peak effect for plotting
     [~, peak_effect_idx] = min(abs(data{1}.time - line_plot_effect / 1000));
@@ -3676,10 +3695,7 @@ pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
     p1_45_high = p1_45_h.dist_pgi_avg(peak_effect_idx);
     p1_67_low = p1_67_l.dist_pgi_avg(peak_effect_idx);
     p1_67_high = p1_67_h.dist_pgi_avg(peak_effect_idx);
-    
-    % Hold for multiple plots
-    hold on;
-    
+
     % Data for partitions
     partitions_1 = [p1_23_low, p1_23_high];
     partitions_2 = [p1_45_low, p1_45_high];
@@ -3690,19 +3706,12 @@ pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
     plot(partitions_2, '-o', 'Color', 'g', 'LineWidth', plot_line_width, 'HandleVisibility', 'off');
     plot(partitions_3, '-o', 'Color', 'b', 'LineWidth', plot_line_width, 'HandleVisibility', 'off');
     
-    % Customize x-axis
-    xticks([1 2]);
-    % xticklabels({'LOW', 'HIGH'});  % Uncomment if custom x-tick labels are needed
-    
-    % Remove x-axis labels
-    set(gca, 'XTickLabelMode', 'manual', 'XTickMode', 'manual');
+    % Customize grid and axis settings
+    grid on;                           % Enable gridlines
+    set(gca, 'XTick', []); % Disable ticks
     
     % Set y-axis limits
     ylim([-1, 4]);
-
-    ax = gca;
-    ax.YAxisLocation = 'left'; % Position y-axis on the left side
-    ax.TickDir = 'in'; % Move ticks to the inside
     
     % Title
     title("P1 - LOW vs. HIGH", 'FontSize', 18);
@@ -3966,7 +3975,6 @@ pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
      %subplot(6, 3,7);
     %set(gca, 'Position', posMiddle3); % Adjust the size and position
     subplot("Position", posMiddle3);
-    set(gca, 'YTick', []);
     grid on;
     [~, peak_effect_idx] = min(abs(data{1}.time - line_plot_effect/1000));
 
@@ -3988,14 +3996,15 @@ pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
     plot(partitions_1, '-o','color', 'r' ,'LineWidth', plot_line_width,'HandleVisibility','off');
     plot(partitions_2,  '-o','color', 'g' ,'LineWidth', plot_line_width,'HandleVisibility','off');
     plot(partitions_3, '-o','color','b','LineWidth', plot_line_width,'HandleVisibility','off');
-        % Customize x-axis labels
-    xticks([1 2]);                 % Set x-tick positions
-    %xticklabels({'LOW', 'HIGH'});   % Replace numeric x-ticks with custom labels
     
-    % Remove x-axis numeric labels
-    set(gca, 'XTickLabelMode', 'manual', 'XTickMode', 'manual');
-    ylim([-1, 4])
-    grid on;
+    % Customize grid and axis settings
+    grid on;                           % Enable gridlines
+    set(gca, 'XTick', []); % Disable ticks
+    
+    % Set y-axis limits
+    ylim([-1, 4]);
+    
+    % Title
     title("P2 - LOW vs. HIGH",'FontSize', 18);
 
     %% %%%%% PARTITION 2 HIGH PANEL PGI
@@ -4257,9 +4266,6 @@ pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
     %set(gca, 'Position', posMiddle5); % Adjust the size and position
     subplot("Position", posMiddle5);
     hold on ;
-    set(gca, 'XTick', []);
-    set(gca, 'YTick', []);
-    grid on;
 
     [~, peak_effect_idx] = min(abs(data{1}.time - line_plot_effect/1000));
 
@@ -4272,8 +4278,6 @@ pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
     p1_67_low = p3_67_l.dist_pgi_avg(peak_effect_idx);
     p1_67_high = p3_67_h.dist_pgi_avg(peak_effect_idx);
 
-    hold on;
-
     partitions_1 = [p1_23_low, p1_23_high];
     partitions_2 = [p1_45_low, p1_45_high];
     partitions_3 = [p1_67_low, p1_67_high];
@@ -4281,14 +4285,15 @@ pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
     plot(partitions_1, '-o','color', 'r' ,'LineWidth', plot_line_width,'HandleVisibility','off');
     plot(partitions_2,  '-o','color', 'g' ,'LineWidth', plot_line_width,'HandleVisibility','off');
     plot(partitions_3, '-o','color','b','LineWidth', plot_line_width,'HandleVisibility','off');
-        % Customize x-axis labels
-    xticks([1 2]);                 % Set x-tick positions
-    %xticklabels({'LOW', 'HIGH'});   % Replace numeric x-ticks with custom labels
+        
+    % Customize grid and axis settings
+    grid on;                           % Enable gridlines
+    set(gca, 'XTick', []); % Disable ticks
     
-    % Remove x-axis numeric labels
-    set(gca, 'XTickLabelMode', 'manual', 'XTickMode', 'manual');
-    grid on;
-    ylim([-1, 4])
+    % Set y-axis limits
+    ylim([-1, 4]);
+    
+    % Title
     title("P3 - LOW vs. HIGH",'FontSize', 18);
 
     %% %%%%% PARTITION 3 HIGH PANEL PGI
@@ -4485,9 +4490,48 @@ pos13 = [0.6, 0.05, 0.3, 0.12];        % Row 6, Col 3 (wider to the left)
 
 elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion == 1 || ...
     strcmp(experiment_type,'pure-factor-effect')
-    t = tiledlayout(2,2, 'TileSpacing','Compact');
+    figure;
+    if plot_thin_med_thick        
+        % Row 1
+        pos1 = [0.05, 0.55, 0.35, 0.35];  % First plot (larger width)
+        pos2 = [0.425, 0.55, 0.15, 0.35];  % Second plot (half width)
+        pos3 = [0.6, 0.55, 0.35, 0.35];    % Third plot (larger width)
+        
+        % Row 2
+        pos4 = [0.05, 0.5, 0.35, 0.35];    % First plot (larger width)
+        pos5 = [0.425, 0.5, 0.15, 0.35];   % Second plot (half width)
+        pos6 = [0.6, 0.5, 0.35, 0.35];     % Third plot (larger width)
+    else
+            % Row 1
+        % Define the positions for the plots, keeping (2,1) and (2,3) empty
+    % Define the positions for the plots, keeping (2,1) and (2,3) empty
+    % Increasing width for pos1, pos3, pos4, and pos6
+    pos1 = [0.05, 0.6, 0.325, 0.25];   % Row 1, Col 1 (wider)
+    pos2 = [0.415, 0.6, 0.125, 0.25];  % Row 1, Col 2 (narrower)
+    pos3 = [0.57, 0.6, 0.325, 0.25];   % Row 1, Col 3 (wider)
+    
+    posMiddle = [0.415, 0.39, 0.125, 0.15]; % Row 2, Col 2 (centered and narrower)
+    
+    pos4 = [0.05, 0.1, 0.325, 0.25];   % Row 3, Col 1 (wider)
+    pos5 = [0.415, 0.1, 0.125, 0.25];  % Row 3, Col 2 (narrower)
+    pos6 = [0.57, 0.1, 0.325, 0.25];   % Row 3, Col 3 (wider)
+    end
+    
+    labels_text_size = 8;
+
+
+  
+    subplot(3,3,1);
+    set(gca, 'Position', pos1); % Adjust the size and position
     time = data{1}.time * 1000;
-    nexttile
+
+        % Shade the region before start_peak
+    xregion([-inf, start_peak], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+    
+    % Shade the region after end_peak
+    xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+
+    line_plot_effect =174.00;
 
     hold on;
     %plot(NaN(1), 'r');
@@ -4509,7 +4553,7 @@ elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion ==
     xlim(plotting_window);
 
     title("LOW",'FontSize', 18);
-    ylim([-6, 6])
+    ylim([-2, 6])
     grid on;
     hold off;
 
@@ -4517,6 +4561,7 @@ elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion ==
         xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
         xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
         xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+         xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
         xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
         yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     end
@@ -4524,18 +4569,62 @@ elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion ==
     %xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
 
-    ylh = ylabel("PGI", "FontSize",16, "Rotation", 0, 'HorizontalAlignment','right', "FontWeight", "bold");
-    ylh.Position(2) = 0.5;
+    ylh = ylabel("PGI", "FontSize",16, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
+    ylh.Position(2) = 2;
     ylh.Position(1) = -220;
 
-    nexttile;
-
+    subplot(3,3,2);
+    set(gca, 'Position', pos2);
+    hold on;
     plot(NaN(1), 'r');
+    plot(NaN(1), 'k');
     if contains(experiment_type, 'partitions-2-8')
-        legend({'P1-PGI'},'Location','bestoutside','FontSize', labels_text_size)
+        legend({'P1-PGI'},'Location','northwest','FontSize', labels_text_size)
     elseif contains(experiment_type, 'pure-factor-effect')
-        legend({'PGI'},'Location','bestoutside','FontSize', labels_text_size)
+        legend({'PGI'},'Location','northwest','FontSize', labels_text_size)
     end
+
+    % interaction plot
+    [~, peak_effect_idx] = min(abs(data{1}.time - line_plot_effect/1000));
+    p1_high =  ci1_h.dist_pgi_avg(peak_effect_idx);
+    p1_low =  ci1_l.dist_pgi_avg(peak_effect_idx);
+
+    % thin thick average 
+     %p1_thin_high = ci1_h.dist_thin_avg(peak_effect_idx);
+     %p1_thick_high = ci1_h.dist_thick_avg(peak_effect_idx);
+     %p1_thin_low = ci1_l.dist_thin_avg(peak_effect_idx);
+     %p1_thick_low = ci1_l.dist_thick_avg(peak_effect_idx);
+
+    %mean_thin_thick_low = mean([p1_thin_low, p1_thick_low]);
+    %mean_thin_thick_high = mean([p1_thick_high, p1_thin_high]);
+
+    partitions_1 = [p1_low, p1_high];
+    %avg_thin_thick = [mean_thin_thick_low, mean_thin_thick_high];
+
+    plot(partitions_1, '-o','color', 'r' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+    %plot(avg_thin_thick, '-o','color', 'k' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+
+    title("LOW vs. HIGH",'FontSize', 18);
+
+    % Customize x-axis labels
+    xticks([1 2]);                 % Set x-tick positions
+    xticklabels({'LOW', 'HIGH'});   % Replace numeric x-ticks with custom labels
+    
+    % Remove x-axis numeric labels
+    set(gca, 'XTickLabelMode', 'manual', 'XTickMode', 'manual');
+      grid on;
+    % interaction plot end
+
+    subplot(3,3,3);
+    set(gca, 'Position', pos3);
+    hold on;
+
+
+       % Shade the region before start_peak
+    xregion([-inf, start_peak], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+    
+    % Shade the region after end_peak
+    xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
 
     hold on;
     plot(time, ci1_h.dist_pgi_avg, 'color', 'r', 'LineWidth', plot_line_width,'HandleVisibility','off');
@@ -4549,7 +4638,7 @@ elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion ==
     xlim(plotting_window);
 
     title("HIGH",'FontSize', 18);
-    ylim([-6, 6])
+    ylim([-2, 6])
     grid on;
     hold off;
 
@@ -4557,16 +4646,61 @@ elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion ==
         xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
         xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
         xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+        xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
         xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
         yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     end
 
     %xlabel("Milliseconds", "FontSize",labels_text_size)
-    %ylabel(ax_label, "FontSize",labels_text_size)
+   % ylabel(ax_label, "FontSize",labels_text_size)
 
+    %% subplot middle
+    subplot('position', posMiddle);
+     hold on;
+
+    plot(NaN(1), 'Color', '#D95319');
+    plot(NaN(1), 'Color', 'g');
+    if contains(experiment_type, 'partitions-2-8')
+        legend({'P1-PGI'},'Location','northwest','FontSize', labels_text_size)
+    elseif contains(experiment_type, 'pure-factor-effect')
+        legend({'Medium', 'Avg. (Thin, Thick)'},'Location','northwest','FontSize', labels_text_size)
+    end
+
+    [~, peak_effect_idx] = min(abs(data{1}.time - line_plot_effect/1000));
+    low_med =  ci1_l.dist_med_avg(peak_effect_idx);
+    
+    low_thin =  ci1_h.dist_thin_avg(peak_effect_idx);
+    low_thick =  ci1_l.dist_thick_avg(peak_effect_idx);
+    low_thin_thick_avg = mean([low_thin, low_thick]);
+
+    high_med =  ci1_h.dist_med_avg(peak_effect_idx);
+
+    high_thick =  ci1_h.dist_thick_avg(peak_effect_idx);
+    high_thin =  ci1_h.dist_thin_avg(peak_effect_idx);
+    high_thin_thick_avg = mean([high_thin, high_thick]);
+    
+    med = [low_med, high_med];
+    avg_thin_thick = [low_thin_thick_avg, high_thin_thick_avg];
+    
+
+    plot(med, '-o','color', '#D95319' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+    plot(avg_thin_thick,  '-o','color', 'g' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+
+
+    % Customize x-axis labels
+    xticks([1 2]);                 % Set x-tick positions
+    %xticklabels({'LOW', 'HIGH'});   % Replace numeric x-ticks with custom labels
+    
+    % Remove x-axis numeric labels
+    set(gca, 'XTickLabelMode', 'manual', 'XTickMode', 'manual');
+    grid on;
+
+
+    %% subplot middle
 
     % low med etc
-    nexttile
+    subplot(3, 3, 7);
+    set(gca, 'Position', pos4);
     hold on;
     %plot(NaN(1), 'Color', '#0072BD');
     %plot(NaN(1), 'Color', '#D95319');
@@ -4592,14 +4726,14 @@ elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion ==
     plot(time, ci1_l.dist_thick_avg, 'color', '#FCD200', 'LineWidth', plot_line_width,'HandleVisibility','off');
     plot(time, ci1_l.dist_thick_high, 'LineWidth', 0.01, 'color', '#FCD200','HandleVisibility','off');
     plot(time, ci1_l.dist_thick_low, 'LineWidth', 0.01, 'color', '#FCD200','HandleVisibility','off');
-    x2 = [time, fliplr(time)];
+   x2 = [time, fliplr(time)];
     inBetween = [ci1_l.dist_thick_high, fliplr(ci1_l.dist_thick_low)];
     h = fill(x2, inBetween, [1,0.92,0], 'HandleVisibility','off', 'LineStyle','none');
     set(h,'facealpha',.175)
 
     xlim(plotting_window);
 
-    ylim([-5.5, 8.5])
+    ylim([-5, 7])
     grid on;
     hold off;
 
@@ -4607,24 +4741,63 @@ elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion ==
         xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
         xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
         xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+        xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
         xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
         yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     end
 
-    xlabel("Milliseconds", "FontSize",labels_text_size)
+    %xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
-    ylh = ylabel("Medium", "FontSize",16, "Rotation", 0, 'HorizontalAlignment','right', "FontWeight", "bold");
-    ylh.Position(2) = 1.8;
+    ylh = ylabel("Amplitude", "FontSize",16, "Rotation", 90, 'HorizontalAlignment','right', "FontWeight", "bold");
+    ylh.Position(2) = 3.5;
     ylh.Position(1) = -220;
 
+    % Shade the region before start_peak
+    xregion([-inf, start_peak], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+    
+    % Shade the region after end_peak
+    xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+
+
     % high med etc
-    nexttile
-    hold on;
+    subplot(3,3, 8);
+set(gca, 'Position', pos5); % Adjust the size and position
+     hold on;
+    [~, peak_effect_idx] = min(abs(data{1}.time - line_plot_effect/1000));
+    low_thick =  ci1_l.dist_thick_avg(peak_effect_idx);
+    low_med =  ci1_l.dist_med_avg(peak_effect_idx);
+    low_thin =  ci1_h.dist_thin_avg(peak_effect_idx);
+    high_thick =  ci1_h.dist_thick_avg(peak_effect_idx);
+    high_med =  ci1_h.dist_med_avg(peak_effect_idx);
+    high_thin =  ci1_h.dist_thin_avg(peak_effect_idx);
+    
+    thick = [low_thick, high_thick];
+    med = [low_med, high_med];
+    thin = [low_thin, high_thin];
+
+    plot(thick, '-o','color', '#FCD200' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+    plot(thin,  '-o','color', '#0072BD' ,'LineWidth', plot_line_width,'HandleVisibility','off');
+    plot(med, '-o','color',  '#D95319','LineWidth', plot_line_width,'HandleVisibility','off');
+    
     plot(NaN(1), 'Color', '#0072BD');
     plot(NaN(1), 'Color', '#D95319');
     plot(NaN(1), 'Color', '#FFFF00');
-    legend({'Thin', 'Medium', 'Thick'},'Location','bestoutside','FontSize', labels_text_size)
+    %plot(NaN(1), 'Color', 'k');
+    legend({'Thin', 'Medium', 'Thick'},'Location','northwest','FontSize', labels_text_size)
+    
 
+    % Customize x-axis labels
+    xticks([1 2]);                 % Set x-tick positions
+    xticklabels({'LOW', 'HIGH'});   % Replace numeric x-ticks with custom labels
+    
+    % Remove x-axis numeric labels
+    set(gca, 'XTickLabelMode', 'manual', 'XTickMode', 'manual');
+    grid on;
+
+    subplot(3,3,9);
+set(gca, 'Position', pos6); % Adjust the size and position
+        hold on;
+    
     plot(time, ci1_h.dist_thin_avg, 'color', '#0072BD', 'LineWidth', plot_line_width,'HandleVisibility','off');
     plot(time, ci1_h.dist_thin_high, 'LineWidth', 0.01, 'color', '#0072BD','HandleVisibility','off');
     plot(time, ci1_h.dist_thin_low, 'LineWidth', 0.01, 'color', '#0072BD','HandleVisibility','off');
@@ -4651,7 +4824,7 @@ elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion ==
 
     xlim(plotting_window);
 
-    ylim([-5.5, 8.5])
+    ylim([-5, 7])
     grid on;
     hold off;
 
@@ -4659,12 +4832,23 @@ elseif strcmp(experiment_type, 'partitions-2-8') && first_partition_regresion ==
         xline(start_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
         xline(end_peak, '-','HandleVisibility','off', "LineWidth", 1.5);
         xline(peak_effect, '--r','HandleVisibility','off', "LineWidth", 1.5);
+        xline(line_plot_effect, '--','HandleVisibility','off', "LineWidth", 1.5);
         xline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
         yline(0, '--b','HandleVisibility','off', "LineWidth", 1.5)
     end
 
-    xlabel("Milliseconds", "FontSize",labels_text_size)
     %ylabel(ax_label, "FontSize",labels_text_size)
+
+    % Shade the region before start_peak
+    xregion([-inf, start_peak], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+    
+    % Shade the region after end_peak
+    xregion([end_peak, inf], 'FaceColor', [0.9 0.9 0.9], 'FaceAlpha', 0.5, 'HandleVisibility', 'off');
+
+
+    %xlabel("Milliseconds", "FontSize",labels_text_size)
+    %ylabel(ax_label, "FontSize",labels_text_size)
+
 
 
 elseif strcmp(experiment_type, 'partitions-2-8') || strcmp(experiment_type, 'erps-23-45-67')
@@ -4712,7 +4896,14 @@ elseif strcmp(experiment_type, 'partitions-2-8') || strcmp(experiment_type, 'erp
     %plot(NaN(1), 'g');
     %plot(NaN(1),  'color','#4DBEEE');
     if contains(experiment_type, 'partitions-2-8')
-        line_plot_effect =171.094;
+        if strcmp(regression_type, "Visual Stress") 
+            line_plot_effect = 226;
+        elseif strcmp(regression_type, "Headache")
+             line_plot_effect =171.094;
+        elseif strcmp(regression_type, "Discomfort")
+            line_plot_effect = 173.5;
+        end
+
         %legend({'P1-PGI', 'P2-PGI', 'P3-PGI'},'Location','bestoutside','FontSize', labels_text_size)
         pgi_low = "Low Group: Partitions PGI";
         pgi_high = "High Group: Partitions: PGI";
@@ -4726,7 +4917,13 @@ elseif strcmp(experiment_type, 'partitions-2-8') || strcmp(experiment_type, 'erp
         high_p3 = "High Group P3";
 
     elseif strcmp(experiment_type, 'erps-23-45-67')
-        line_plot_effect =148;
+        if strcmp(regression_type, "Visual Stress") 
+            line_plot_effect = 244;
+        elseif strcmp(regression_type, "Headache")
+            line_plot_effect =148;
+        elseif strcmp(regression_type, "Discomfort")
+            line_plot_effect = 205;
+        end
         %legend({'Onsets 2:3', 'Onsets 4:5', 'Onsets 6:7'},'Location','bestoutside','FontSize', labels_text_size)
         pgi_low = "Low Group: Onsets PGI";
         pgi_high = "High Group: Onsets: PGI";
@@ -5729,11 +5926,14 @@ end
 
 %% applies the wavelett decomposition to the data
 function dataset = to_frequency_data(save_dir, partition, type, ...
-    participant_level, foi, analysis_type, filename, n_participants)
+    participant_level, foi, analysis_type, filename, n_participants, toi)
 
     low = foi(1);
     high = foi(2);
     
+    time_start = toi(1);
+    time_end = toi(2);
+
     if low == 10 && high == 15
         num_cycles = 5;
     elseif low == 20 && high == 30
@@ -5755,7 +5955,7 @@ cfg.width = num_cycles;
 cfg.output = 'pow';
 cfg.pad = 'nextpow2';
 cfg.foi = foi(1):1:foi(2);
-cfg.toi = -0.5:0.002:1.3;
+cfg.toi = -0.5:0.002:3.05;
 cfg.keeptrials = 'yes';
 
 
@@ -5771,7 +5971,7 @@ for i=1:n_participants
     save_path = strcat(save_dir, int2str(i), '\', 'frequency_domain\', analysis_type, '_', int2str(partition.partition_number), '_');
 
 
-    full_save_dir = save_path + "trial_level_" + int2str(foi(1)) + "_" + int2str(foi(2)) + "_numcycles_" + int2str(num_cycles) + ".mat";
+    full_save_dir = save_path + "trial_level_" + int2str(foi(1)) + "_" + int2str(foi(2)) + "_numcycles_" + int2str(num_cycles) + "_" + num2str(time_start) + "_" + num2str(time_end) + ".mat";
 
     if strcmp(type, 'preprocess')
       
